@@ -12,7 +12,7 @@ outputs:
 runs:
   using: "composite"
   steps:
-    - run: echo "The INPUT_VALUE is: ${{ inputs.INPUT_VALUE }}."
+    - run: echo ${{ inputs.INPUT_VALUE }}
       shell: bash
     - id: random-number-generator
       run: |
