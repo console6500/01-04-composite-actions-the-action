@@ -1,21 +1,19 @@
-name: My Custom Action
-description: This is the description of the custom action
+name: Standard Python Steps
+description: Runs the standard steps for Python
 inputs:
-  INPUT_VALUE:
-    description: The first input
+  PYTHON_VERSION:
+    description: The version of Python to use
     required: true
-    default: 'World'
+    default: 3.x
 outputs:
-  OUTPUT1:
-    description: The first output
-    value: ${{ steps.output1.outputs.OUTPUT }}
+  FILE_COUNT:
+    description: The number of files in the project
+    value: ${{ steps.file_counter.outputs.OUTPUT }}
 runs:
   using: "composite"
   steps:
-    - run: echo ${{ inputs.INPUT_VALUE }}
-      shell: bash
-    - id: random-number-generator
+    - id: file_counter
       run: |
-        echo "::set-output name=OUTPUT::$(echo $RANDOM)"
-        echo "The output value is ${{ steps.output1.outputs.OUTPUT }}"
+        file_count=$(find . | wc -l)
+        echo "::set-output name=FILE_COUNT::$(echo $file_count)"
       shell: bash
