@@ -29,6 +29,7 @@ runs:
     - name: flake8
       run: |
         if [ -d "./tests" ];
+        then
           FILES="*.py test/*.py"
         else
           FILES="*.py"
@@ -40,6 +41,7 @@ runs:
     - name: pylint
       run: |
         if [ -d "./tests" ];
+        then
           FILES="*.py test/*.py"
         else
           FILES="*.py"
