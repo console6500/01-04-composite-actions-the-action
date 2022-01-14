@@ -9,7 +9,7 @@ inputs:
     description: Set to true to run unit tests
     required: false
     default: false
-output:
+outputs:
   PROJECT_FILES:
     description: "The pattern used to match files in the project"
     value: ${{ steps.project_files.outputs.files }}
