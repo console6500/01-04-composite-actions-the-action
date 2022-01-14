@@ -27,11 +27,25 @@ runs:
       shell: bash
     
     - name: flake8
-      run: flake8 --ignore=E501,E231 *.py tests/*.py
+      run: |
+        if [ -d "./tests" ];
+          FILES="*.py test/*.py"
+        else
+          FILES="*.py"
+        fi        
+
+        flake8 --ignore=E501,E231 ${FILES}
       shell: bash
     
     - name: pylint
-      run: pylint --errors-only --disable=C0301 --disable=C0326 *.py tests/*.py
+      run: |
+        if [ -d "./tests" ];
+          FILES="*.py test/*.py"
+        else
+          FILES="*.py"
+        fi        
+
+        pylint --errors-only --disable=C0301 --disable=C0326 ${FILES}
       shell: bash
 
     - name: unit test
