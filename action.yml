@@ -14,10 +14,10 @@ runs:
   steps:
     - uses: actions/checkout@v2
     
-    - name: Set up Python ${{ input.PYTHON_VERSION }}
+    - name: Set up Python ${{ inputs.PYTHON_VERSION }}
       uses: actions/setup-python@v2
       with:
-        python-version: ${{ input.PYTHON_VERSION }}
+        python-version: ${{ inputs.PYTHON_VERSION }}
     
     - name: Install requirements
       run: |
@@ -35,6 +35,6 @@ runs:
       shell: bash
 
     - name: unit test
-      if: ${{ input.RUN_UNIT_TESTS }}
+      if: ${{ inputs.RUN_UNIT_TESTS }}
       run: python -m unittest --verbose --failfast  
       shell: bash
