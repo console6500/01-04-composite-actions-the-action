@@ -14,21 +14,27 @@ runs:
   steps:
     - uses: actions/checkout@v2
     
-    - uses: actions/setup-python@v2
+    - name: Set up Python ${{ input.PYTHON_VERSION }}
+      uses: actions/setup-python@v2
       with:
         python-version: ${{ input.PYTHON_VERSION }}
     
-    - name: pip install requirements
+    - name: Install requirements
       run: |
         pip install -r requirements.txt
         pip install flake8
         pip install pylint --errors-only --disable=C0301 --disable=C0326 *.py tests/*.py
+      shell: bash
     
     - name: flake8
       run: flake8 --ignore=E501,E231 *.py tests/*.py
+      shell: bash
     
     - name: pylint
       run: pylint --errors-only --disable=C0301 --disable=C0326 *.py tests/*.py
+      shell: bash
 
     - name: unit test
+      if: ${{ input.RUN_UNIT_TESTS }}
       run: python -m unittest --verbose --failfast  
+      shell: bash
