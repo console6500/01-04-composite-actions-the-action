@@ -1,0 +1,21 @@
+name: My Custom Action
+description: This is the description of the custom action
+inputs:
+  INPUT_VALUE:
+    description: The first input
+    required: true
+    default: 'World'
+outputs:
+  OUTPUT1:
+    description: The first output
+    value: ${{ steps.output1.outputs.OUTPUT }}
+runs:
+  using: "composite"
+  steps:
+    - run: echo "The INPUT_VALUE is: ${{ inputs.INPUT_VALUE }}."
+      shell: bash
+    - id: random-number-generator
+      run: |
+        echo "::set-output name=OUTPUT::$(echo $RANDOM)"
+        echo "The output value is ${{ steps.output1.outputs.OUTPUT }}"
+      shell: bash
