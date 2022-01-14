@@ -23,7 +23,7 @@ runs:
       run: |
         pip install -r requirements.txt
         pip install flake8
-        pip install pylint --errors-only --disable=C0301 --disable=C0326 *.py tests/*.py
+        pip install pylint
       shell: bash
     
     - name: flake8
