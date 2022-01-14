@@ -9,6 +9,10 @@ inputs:
     description: Set to true to run unit tests
     required: false
     default: false
+output:
+  PROJECT_FILES:
+    description: "The pattern used to match files in the project"
+    value: ${{ steps.project_files.outputs.files }}
 runs:
   using: "composite"
   steps:
@@ -25,32 +29,27 @@ runs:
         pip install flake8
         pip install pylint
       shell: bash
-    
-    - name: flake8
+
+    - name: Identify project files
+      id: project_files
       run: |
         if [ -d "./tests" ];
         then
-          FILES="*.py test/*.py"
+          echo "::set-output name=files::*.py tests/*.py"
         else
-          FILES="*.py"
+          echo "::set-output name=files::*.py"
         fi        
-
-        flake8 --ignore=E501,E231 ${FILES}
+      shell: bash
+    
+    - name: flake8
+      run: flake8 --ignore=E501,E231 ${{ steps.project_files.outputs.files }}
       shell: bash
     
     - name: pylint
-      run: |
-        if [ -d "./tests" ];
-        then
-          FILES="*.py test/*.py"
-        else
-          FILES="*.py"
-        fi        
-
-        pylint --errors-only --disable=C0301 --disable=C0326 ${FILES}
+      run: pylint --errors-only --disable=C0301 --disable=C0326 ${{ steps.project_files.outputs.files }}
       shell: bash
 
-    - name: unit test
+    - name: unit tests
       if: ${{ inputs.RUN_UNIT_TESTS }}
       run: python -m unittest --verbose --failfast  
       shell: bash
