@@ -5,15 +5,30 @@ inputs:
     description: The version of Python to use
     required: true
     default: 3.x
-outputs:
-  FILE_COUNT:
-    description: The number of files in the project
-    value: ${{ steps.file_counter.outputs.OUTPUT }}
+  RUN_UNIT_TESTS:
+    description: Set to true to run unit tests
+    required: false
+    default: false
 runs:
   using: "composite"
   steps:
-    - id: file_counter
+    - uses: actions/checkout@v2
+    
+    - uses: actions/setup-python@v2
+      with:
+        python-version: ${{ input.PYTHON_VERSION }}
+    
+    - name: pip install requirements
       run: |
-        file_count=$(find . | wc -l)
-        echo "::set-output name=FILE_COUNT::$(echo $file_count)"
-      shell: bash
+        pip install -r requirements.txt
+        pip install flake8
+        pip install pylint --errors-only --disable=C0301 --disable=C0326 *.py tests/*.py
+    
+    - name: flake8
+      run: flake8 --ignore=E501,E231 *.py tests/*.py
+    
+    - name: pylint
+      run: pylint --errors-only --disable=C0301 --disable=C0326 *.py tests/*.py
+
+    - name: unit test
+      run: python -m unittest --verbose --failfast  
