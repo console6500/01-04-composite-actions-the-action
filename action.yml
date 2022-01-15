@@ -22,6 +22,7 @@ runs:
       uses: actions/setup-python@v2
       with:
         python-version: ${{ inputs.PYTHON_VERSION }}
+        cache: 'pip'
     
     - name: Install requirements
       run: |
