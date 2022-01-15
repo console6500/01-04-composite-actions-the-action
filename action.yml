@@ -26,9 +26,8 @@ runs:
     
     - name: Install requirements
       run: |
-        pip install -r requirements.txt
-        pip install flake8
-        pip install pylint
+        pip install --quiet --requirement requirements.txt
+        pip install --quiet flake8 pylint
       shell: bash
 
     - name: Identify project files
